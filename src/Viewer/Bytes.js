@@ -35,9 +35,9 @@ export default class BytesViewer extends Viewer {
         name: 'format',
         type: 'enum',
         width: 6,
-        value: 'hexadecimal',
-        elements: ['hexadecimal', 'binary'],
-        labels: ['Hexadecimal', 'Binary'],
+        value: 'hexascii',
+        elements: ['hexascii', 'hexadecimal', 'binary'],
+        labels: ['Hex/ASCII dump', 'Hexadecimal', 'Binary'],
         randomizable: false
       },
       {
@@ -72,6 +72,10 @@ export default class BytesViewer extends Viewer {
     // Encode bytes to string
     let string, charBits
     switch (format) {
+      case 'hexascii':
+        string = hexAsciiStringFromBytes(bytes)
+        charBits = 8
+        break
       case 'hexadecimal':
         string = ByteEncoder.hexStringFromBytes(bytes)
         charBits = 4
@@ -109,6 +113,9 @@ export default class BytesViewer extends Viewer {
       // Decode string to bytes
       let bytes
       switch (format) {
+        case 'hexascii':
+          bytes = ByteEncoder.bytesFromHexAsciiString(string)
+          break
         case 'hexadecimal':
           bytes = ByteEncoder.bytesFromHexString(string)
           break
